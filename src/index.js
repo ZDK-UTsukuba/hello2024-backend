@@ -62,7 +62,7 @@ app.get('/posts',async (c) => {
 //記事の詳細を返すエンドポイント
 app.get('posts/:number', async(c) =>{
 	const number = parseInt(c.req.param('number'));
-	const data = await getposts(c);
+	const data = await getPosts(c);
 	const post = data.posts.find((post) => post.number === number);
 	if (!post) {
 		return c.text('Not found', 404);
