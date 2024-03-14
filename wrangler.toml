@@ -49,3 +49,6 @@ id = "8cb7e45af01d453a921653b397ba9654"
 # [[migrations]]
 # tag = "v1"
 # new_classes = ["MyDurableObject"]
+
+[dev]
+ip = "0.0.0.0"
