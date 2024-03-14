@@ -15,7 +15,7 @@ example
         "name":"テスト2",
         "created_at":"2024-02-01T22:17:30+09:00",
         "categories":["test"]
-        }
+    }
 ]
 ```
 
@@ -31,5 +31,5 @@ example
     "created_at":"2024-02-01T22:17:30+09:00",
     "categories":["test"],
     "body":"テストの2番目のページです"
-    }
+}
 ```
