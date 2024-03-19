@@ -2,8 +2,7 @@ import { Hono } from 'hono'
 const app = new Hono()
 
 //esaからデータを取得する関数
-const getPosts = async (c) =>{
-
+const getEsaContents = async (c) =>{
     const cache = await c.env.KV.get('esa');
     //もしキャッシュがあればそれを返す
     if (cache) {
@@ -13,15 +12,33 @@ const getPosts = async (c) =>{
 
     // esa の API を叩いてデータを取得する、特定のカテゴリに含まれ、WIP でない記事のみを絞り込み
     const endpoint = new URL('https://api.esa.io/v1/teams/zdk/posts');
-    const category = 'project/2023/新情Web/記事/_production';
-    endpoint.searchParams.set('q', `in:${category} wip:false`);
 
-    const response = await fetch(endpoint.href, {
+    // 記事の取得
+    const postCategory = 'project/2023/新情Web/記事/_production';
+    endpoint.searchParams.set('q', `in:${postCategory} wip:false`);
+
+    const postResponse = await fetch(endpoint.href, {
         headers: {
             Authorization: `Bearer ${c.env.ESA_TOKEN}`,
         },
     });
-    const result = await response.json();
+    const postResult = await postResponse.json();
+
+    // FAQの取得
+    const faqCategory = 'project/2023/新情Web/FAQ';
+    endpoint.searchParams.set('q', `in:${faqCategory} wip:false`);
+
+    const faqResponse = await fetch(endpoint.href, {
+        headers: {
+            Authorization: `Bearer ${c.env.ESA_TOKEN}`,
+        },
+    });
+    const faqResult = await faqResponse.json();
+
+    const result = {
+        posts: postResult,
+        faqs: faqResult
+    };
 
     //KVにesaの値を保存する
     await c.env.KV.put('esa', JSON.stringify(result),{
@@ -31,6 +48,18 @@ const getPosts = async (c) =>{
 
     console.log('hit no cache');
     return result;
+}
+
+// 記事の取得
+const getPosts = async (c) =>{
+    const data = await getEsaContents(c);
+    return data.posts;
+}
+
+// FAQの取得
+const getFAQs = async (c) =>{
+    const data = await getEsaContents(c);
+    return data.faqs;
 }
 
 //記事のリストを返すエンドポイント
