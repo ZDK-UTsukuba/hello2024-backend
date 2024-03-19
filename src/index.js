@@ -25,8 +25,8 @@ const getEsaContents = async (c) =>{
     const postResult = await postResponse.json();
 
     // FAQの取得
-    const faqCategory = 'project/2023/新情Web/FAQ';
-    endpoint.searchParams.set('q', `in:${faqCategory} wip:false`);
+    const faqFullName = 'project/2023/新情Web/FAQ';
+    endpoint.searchParams.set('q', `full_name:${faqFullName} wip:false`);
 
     const faqResponse = await fetch(endpoint.href, {
         headers: {
@@ -57,9 +57,9 @@ const getPosts = async (c) =>{
 }
 
 // FAQの取得
-const getFAQs = async (c) =>{
+const getFAQ = async (c) =>{
     const data = await getEsaContents(c);
-    return data.faqs;
+    return data.faqs.posts[0];
 }
 
 //記事のリストを返すエンドポイント
@@ -79,7 +79,7 @@ app.get('/posts',async (c) => {
 });
 
 //記事の詳細を返すエンドポイント
-app.get('posts/:number', async(c) =>{
+app.get('/posts/:number', async(c) =>{
     const number = parseInt(c.req.param('number'));
     const data = await getPosts(c);
     const post = data.posts.find((post) => post.number === number);
@@ -96,5 +96,39 @@ app.get('posts/:number', async(c) =>{
         body: post.body_md,
     });
 });
+
+//FAQを返すエンドポイント
+app.get('/faqs',async (c) => {
+    const number = parseInt(c.req.param('number'));
+    const data = await getFAQ(c);
+
+    if (!data) {
+        return c.text('Not found', 404);
+    }
+
+    const lines = data.body_md.split("\r\n");
+    const qAndAList = [];
+    const questionRe = /^##\s(.+)\s*$/;
+    let tmpQAndA;
+
+    for(const line of lines){
+        const result = questionRe.exec(line);
+        if(result !== null){
+            if(tmpQAndA !== undefined){
+                qAndAList.push(tmpQAndA);
+            }
+            tmpQAndA = {
+                question: result[1],
+                answer: ""
+            };
+        }else if(tmpQAndA !== undefined){
+            tmpQAndA.answer = tmpQAndA.answer + line + "\r\n";
+        }
+    }
+    qAndAList.push(tmpQAndA);
+
+    return c.json(qAndAList);
+});
+
 
 export default app;
