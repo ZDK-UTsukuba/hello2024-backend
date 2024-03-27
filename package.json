@@ -8,6 +8,7 @@
     "start": "wrangler dev"
   },
   "devDependencies": {
+    "eslint": "^8.57.0",
     "wrangler": "^3.0.0"
   },
   "dependencies": {
