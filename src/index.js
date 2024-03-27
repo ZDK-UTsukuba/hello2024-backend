@@ -114,6 +114,7 @@ app.get('/faqs',async (c) => {
         const result = questionRe.exec(line);
         if(result !== null){
             if(tmpQAndA !== undefined){
+                tmpQAndA.answer = tmpQAndA.answer.trim();
                 qAndAList.push(tmpQAndA);
             }
             tmpQAndA = {
@@ -124,10 +125,11 @@ app.get('/faqs',async (c) => {
             tmpQAndA.answer = tmpQAndA.answer + line + "\r\n";
         }
     }
+
+    tmpQAndA.answer = tmpQAndA.answer.trim();
     qAndAList.push(tmpQAndA);
 
     return c.json(qAndAList);
 });
-
 
 export default app;
