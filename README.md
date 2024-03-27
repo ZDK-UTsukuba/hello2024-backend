@@ -1,9 +1,15 @@
 # hello2024-backend
 新入生情報Web2024バックエンド
 
+## 環境構築
+
+1. `cp sample.dev.vars .dev.vars`
+2. `node_modules` のインストール
+    - 直接実行: `npm install`
+    - docker compose: `docker compose run --rm app npm install`
+
 ## docker compose
 
-- 環境構築: `docker compose run --rm app npm install`
 - バックグラウンド実行
     - 起動: `docker compose up -d`
     - 停止: `docker compose stop`
