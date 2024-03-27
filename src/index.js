@@ -99,7 +99,6 @@ app.get('/posts/:number', async(c) =>{
 
 //FAQを返すエンドポイント
 app.get('/faqs',async (c) => {
-    const number = parseInt(c.req.param('number'));
     const data = await getFAQ(c);
 
     if (!data) {
