@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    working_dir: /app
+    ports:
+      - 127.0.0.1:8787:8787
+    volumes:
+      - .:/app:cached

@@ -1,0 +1,30 @@
+name: reviewdog
+
+on: [pull_request]
+
+jobs:
+  actionlint:
+    name: ActionLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Lint Actions
+        uses: reviewdog/action-actionlint@v1
+        with:
+          fail_on_error: true
+
+  eslint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: ESLint
+        uses: reviewdog/action-eslint@v1
+        with:
+          eslint_flags: "src/"
+          fail_on_error: true
