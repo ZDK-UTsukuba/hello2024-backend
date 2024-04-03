@@ -18,6 +18,12 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           secrets: |
+            ESA_ENDPOINT
             ESA_TOKEN
+            ESA_POST_CATEGORY
+            ESA_FAQ_FULLNAME
         env:
+          ESA_ENDPOINT: ${{ secrets.ESA_ENDPOINT }}
           ESA_TOKEN: ${{ secrets.ESA_TOKEN }}
+          ESA_POST_CATEGORY: ${{ secrets.ESA_POST_CATEGORY }}
+          ESA_FAQ_FULLNAME: ${{ secrets.ESA_FAQ_FULLNAME }}

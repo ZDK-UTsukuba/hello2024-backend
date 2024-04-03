@@ -6,15 +6,15 @@ const getEsaContents = async (c) =>{
     const cache = await c.env.KV.get('esa');
     //もしキャッシュがあればそれを返す
     if (cache) {
-        console.log("hit!")
+        console.log("hit!");
         return JSON.parse(cache);
     }
 
     // esa の API を叩いてデータを取得する、特定のカテゴリに含まれ、WIP でない記事のみを絞り込み
-    const endpoint = new URL('https://api.esa.io/v1/teams/zdk/posts');
+    const endpoint = new URL(`${c.env.ESA_ENDPOINT}/posts`);
 
     // 記事の取得
-    const postCategory = 'project/2023/新情Web/記事/_production';
+    const postCategory = c.env.ESA_POST_CATEGORY;
     endpoint.searchParams.set('q', `in:${postCategory} wip:false`);
 
     const postResponse = await fetch(endpoint.href, {
@@ -25,7 +25,7 @@ const getEsaContents = async (c) =>{
     const postResult = await postResponse.json();
 
     // FAQの取得
-    const faqFullName = 'project/2023/新情Web/FAQ';
+    const faqFullName = c.env.ESA_FAQ_FULLNAME;
     endpoint.searchParams.set('q', `full_name:${faqFullName} wip:false`);
 
     const faqResponse = await fetch(endpoint.href, {
