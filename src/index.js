@@ -11,7 +11,7 @@ const getEsaContents = async (c) =>{
     }
 
     // esa の API を叩いてデータを取得する、特定のカテゴリに含まれ、WIP でない記事のみを絞り込み
-    const endpoint = new URL(c.env.ESA_ENDPOINT);
+    const endpoint = new URL(`${c.env.ESA_ENDPOINT}/posts`);
 
     // 記事の取得
     const postCategory = c.env.ESA_POST_CATEGORY;
